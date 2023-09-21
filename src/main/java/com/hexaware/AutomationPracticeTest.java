@@ -4,10 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -30,7 +28,7 @@ public class AutomationPracticeTest {
         }
     }
 
-    @Test
+    @Test(enabled = false, priority = 1)
     public void registerUserTest() throws InterruptedException {
 
         // Click on the sign up login button => xpath => //a[text()=" Signup / Login"]
@@ -46,8 +44,6 @@ public class AutomationPracticeTest {
 
             // type password
             driver.findElement(By.id("password")).sendKeys("Password@1");
-
-
 
 
             // Contact Information Page
@@ -94,8 +90,46 @@ public class AutomationPracticeTest {
             // button
             driver.findElement(By.xpath("//button[@type=\"submit\"]")).click();
 
-        }else
+            // verify Account Created message is visible => xpath - //b[text()="Account Created!"]
+            WebElement accountCreatedMsg = driver.findElement(By.xpath("//b[text()=\"Account Created!\"]"));
+
+            Assert.assertEquals(accountCreatedMsg.getText(), "ACCOUNT CREATED!");
+
+            // click on continue button
+            WebElement continueBtn = driver.findElement(By.xpath("/html/body/section/div/div/div/div/a"));
+            if(continueBtn.isEnabled()){
+                continueBtn.click();
+
+                driver.switchTo().frame("aswift_1");
+                driver.findElement(By.id("dismiss-button")).click();
+
+
+                String userName = driver.findElement(By.cssSelector(".nav li:last-child a b")).getText();
+                Assert.assertEquals(userName, "Joe Doe");
+
+                driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).click();
+
+
+                // Delete Account btn
+                //driver.findElement(By.cssSelector("a[href=\"/delete_account\"]")).click();
+
+                //WebElement deleteMsg = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div/p[1]"));
+
+                //Assert.assertEquals(deleteMsg.getText(), "Your account has been permanently deleted!");
+
+                //click on continue button
+                //driver.findElement(By.xpath("/html/body/section/div/div/div/div/a")).click();
+
+
+                //System.out.println("HomePage title: " + driver.getTitle());
+                //System.out.println("Current Url: " + driver.getCurrentUrl());
+
+            }
+
+
+        }else {
             System.out.println("Element is not visible");
+        }
 
         // type user => name => name
 
@@ -105,11 +139,41 @@ public class AutomationPracticeTest {
 
     }
 
+
+    @Test(enabled = false)
+    public void loginValidUser() throws InterruptedException {
+        driver.findElement(By.xpath("//a[text()=\" Signup / Login\"]")).click();
+
+        driver.findElement(By.xpath("//*[@data-qa=\"login-email\"]")).sendKeys("joe.doe@email.com");
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//*[@data-qa=\"login-password\"]")).sendKeys("Password@1");
+        driver.findElement(By.xpath("//*[@data-qa=\"login-button\"]")).click();
+
+        String userName = driver.findElement(By.cssSelector(".nav li:last-child a b")).getText();
+        Assert.assertEquals(userName, "Joe Doe");
+    }
+
+    @Test
+    public void loginInvalidUser() {
+        driver.findElement(By.xpath("//a[text()=\" Signup / Login\"]")).click();
+
+        driver.findElement(By.xpath("//*[@data-qa=\"login-email\"]")).sendKeys("joe.doe@email.com");
+        driver.findElement(By.xpath("//*[@data-qa=\"login-password\"]")).sendKeys("Password@123123");
+        driver.findElement(By.xpath("//*[@data-qa=\"login-button\"]")).click();
+        WebElement errorMsg = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/p"));
+
+        if (errorMsg.isDisplayed())
+            Assert.assertEquals(errorMsg.getText(), "Your email or password is incorrect!");
+
+
+    }
+
+
     @AfterClass
     public void tearDown(){
         if (driver != null){
             System.out.println("Exit browser");
-            //driver.quit();
+            driver.quit();
         }
     }
 
