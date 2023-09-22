@@ -165,7 +165,6 @@ public class AutomationPracticeTest {
         if (errorMsg.isDisplayed())
             Assert.assertEquals(errorMsg.getText(), "Your email or password is incorrect!");
 
-
     }
 
 
