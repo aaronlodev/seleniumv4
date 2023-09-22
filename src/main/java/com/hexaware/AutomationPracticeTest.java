@@ -1,6 +1,7 @@
 package com.hexaware;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -161,6 +162,8 @@ public class AutomationPracticeTest {
         driver.findElement(By.xpath("//*[@data-qa=\"login-password\"]")).sendKeys("Password@123123");
         driver.findElement(By.xpath("//*[@data-qa=\"login-button\"]")).click();
         WebElement errorMsg = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/p"));
+
+        JavascriptExecutor js = (JavascriptExecutor)driver;
 
         if (errorMsg.isDisplayed())
             Assert.assertEquals(errorMsg.getText(), "Your email or password is incorrect!");
