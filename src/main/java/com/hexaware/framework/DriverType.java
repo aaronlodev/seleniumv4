@@ -3,7 +3,10 @@ package com.hexaware.framework;
 public enum DriverType {
 
     Chrome("Chrome"),
-    FireFox("FireFox");
+    FireFox("FireFox"),
+
+    SauceLabs("SauceLabs"),
+    SauceLabsMobileWeb("SauceLabsMobileWeb");
 
 
     private final String type;

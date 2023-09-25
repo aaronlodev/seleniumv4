@@ -77,12 +77,11 @@ public class AccountInformationPage extends DriverHandler {
     }
 
 
-    WebDriverWait wait;
+
 
     public AccountInformationPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
 

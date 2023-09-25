@@ -2,6 +2,7 @@ package tests;
 
 import com.hexaware.framework.DriverBuilder;
 import com.hexaware.framework.DriverType;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -18,7 +19,7 @@ public class GoogleSearchTest {
 
     @BeforeClass
     public void initWebDriver() throws Exception {
-        driver = new DriverBuilder(DriverType.FireFox).withDefaultOptions().build();
+        driver = new DriverBuilder(DriverType.SauceLabsMobileWeb).build();
         homePage = new GoogleHomePage(driver);
     }
 
@@ -28,6 +29,7 @@ public class GoogleSearchTest {
         homePage.search("Hexaware", Keys.ENTER);
         homePage.clickOnLink();
         Assert.assertEquals(homePage.getCurrentURL(), "https://hexaware.com/");
+
 
     }
 

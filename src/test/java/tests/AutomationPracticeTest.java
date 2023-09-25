@@ -1,6 +1,7 @@
 package tests;
 
 import com.hexaware.framework.DriverBuilder;
+import com.hexaware.framework.DriverHandler;
 import com.hexaware.framework.DriverType;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -19,6 +20,7 @@ public class AutomationPracticeTest {
     AccountConfirmationPage confirmationPage;
 
     UserPage userPage;
+
 
     @BeforeClass
     public void initDriver() throws Exception {
@@ -49,15 +51,11 @@ public class AutomationPracticeTest {
         Assert.assertEquals(userPage.getLoggerUser(), "Joe Doe");
 
         userPage.deleteAccount();
-
-
-
-
     }
 
-    @AfterClass(enabled = false)
-    public void tearDown(){
-        if (driver != null){
+    @AfterClass
+    public void tearDown() {
+        if (driver != null) {
             driver.quit();
         }
     }

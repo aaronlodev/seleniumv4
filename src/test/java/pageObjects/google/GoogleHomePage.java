@@ -12,7 +12,7 @@ public class GoogleHomePage {
     WebDriver driver;
     WebDriverWait wait;
     By searchInput = By.name("q");
-    public By hexawareLink = By.partialLinkText("Hexaware Technologies |");
+    By hexawareLink = By.partialLinkText("Hexaware Technologies |");
 
 
     public GoogleHomePage(WebDriver driver) {
@@ -20,19 +20,19 @@ public class GoogleHomePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public void search(CharSequence... text){
+    public void search(CharSequence... text) {
         driver.findElement(searchInput).sendKeys(text);
     }
 
-    public void clickOnLink(){
+    public void clickOnLink() {
         wait.until(ExpectedConditions.elementToBeClickable(hexawareLink)).click();
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return driver.getTitle();
     }
 
-    public String  getCurrentURL(){
+    public String getCurrentURL() {
         return driver.getCurrentUrl();
     }
 

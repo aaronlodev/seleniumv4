@@ -1,5 +1,7 @@
 package com.hexaware.framework;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -9,14 +11,18 @@ import java.time.Duration;
 
 public class DriverHandler {
 
-    private WebDriver driver;
-    private WebDriverWait wait;
+    public WebDriver driver;
+    public WebDriverWait wait;
+
+    public JavascriptExecutor js;
 
 
     public DriverHandler(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        js = (JavascriptExecutor) driver;
     }
+
 
     protected void PerformAction(SeleniumAction action, WebElement element, String value) throws Exception {
 
@@ -53,13 +59,14 @@ public class DriverHandler {
                     SwitchToFrameByIdex(Integer.parseInt(value));
                     break;
 
+                case Quit:
+                    Quit();
+                    break;
+
 
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
-        } finally {
-
-            clearHighlight(element);
         }
 
     }
@@ -73,6 +80,8 @@ public class DriverHandler {
 
         } catch (Exception ex) {
             throw new Exception(ex.getMessage());
+        }finally {
+            clearHighlight(element);
         }
     }
 
@@ -84,6 +93,8 @@ public class DriverHandler {
 
         } catch (Exception ex) {
             throw new Exception(ex.getMessage());
+        }finally {
+            clearHighlight(element);
         }
     }
 
@@ -95,6 +106,8 @@ public class DriverHandler {
 
         } catch (Exception ex) {
             throw new Exception(ex.getMessage());
+        }finally {
+            clearHighlight(element);
         }
     }
 
@@ -107,12 +120,13 @@ public class DriverHandler {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }finally {
+            clearHighlight(element);
         }
     }
 
     private void SwitchToFrameByIdOrName(String idOrName) throws Exception {
         try {
-
 
 
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(idOrName)).switchTo().frame(idOrName);
@@ -136,26 +150,37 @@ public class DriverHandler {
 
     private void Click(WebElement element) throws Exception {
         try {
+            clearHighlight(element);
             wait.until(ExpectedConditions.elementToBeClickable(element)).click();
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
+    private void Quit() throws Exception {
+        try {
+            if (driver != null) {
+                driver.quit();
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
     private void Highlight(WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        //JavascriptExecutor js = (JavascriptExecutor) this.driver;
         String border = "#f00 solid 5px";
         js.executeScript("arguments[0].style.outline = '" + border + "'; ", element);
     }
 
     private void clearHighlight(WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        //JavascriptExecutor js = (JavascriptExecutor) this.driver;
         String border = "#f00 solid 0px";
         js.executeScript("arguments[0].style.outline = '" + border + "'; ", element);
     }
 
     private void scrollIntoView(WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        //JavascriptExecutor js = (JavascriptExecutor) this.driver;
         js.executeScript("arguments[0].scrollIntoView();", element);
     }
 
